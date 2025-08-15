@@ -186,7 +186,13 @@ Traffic Legend:
         if result_pair is not None:
             return result_pair
         else:
-            raise self.server.EClose("Token '%s' not found" % token)
+            #agregado por Ricardo Valladares para aceptar: http://10.0.1.7:6080/vnc.html?path=?token=192.100.1.100:5900
+            #asi como tambien: http://10.0.1.7:6080/vnc.html?path=?token=servidor
+            if ":" in token:
+                partes = token.split(":", 1)
+                return partes[0].strip(), partes[1].strip()
+            else:
+                raise self.server.EClose("Token '%s' not found" % token)
 
     def do_proxy(self, target):
         """
